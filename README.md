@@ -1,21 +1,21 @@
 # 🌤️ WeatherApp — Final Exam Project
 
-A modern Android weather application with a dark blue UI, real-time weather data, and GPS location detection.
+თანამედროვე Android ამინდის აპლიკაცია მუქი ლურჯი დიზაინით, რეალური დროის მონაცემებით და GPS-ით.
 
 ---
 
-## 📱 Application Description
+## 📱 აპლიკაციის აღწერა
 
-WeatherApp shows:
-- **Current weather** for any city: temperature, feels like, humidity, wind speed, description, and a weather icon
-- **7-day forecast** as a scrollable list with high/low temps, description, and chance of rain
-- **GPS auto-detection** — the app detects your city automatically using the device's location
+WeatherApp აჩვენებს:
+- **მიმდინარე ამინდს** ნებისმიერი ქალაქისთვის: ტემპერატურა, შეგრძნება, ტენიანობა, ქარის სიჩქარე, აღწერა და ამინდის იკონი
+- **7-დღიანი პროგნოზი** გადახვევადი სიის სახით მაქსიმალური/მინიმალური ტემპერატურით, აღწერით და წვიმის ალბათობით
+- **GPS ავტო-განსაზღვრა** — აპლიკაცია ავტომატურად ადგენს შენს ქალაქს მოწყობილობის მდებარეობის გამოყენებით
 
-Data is fetched from the **OpenWeatherMap API** via Retrofit and **cached locally in Room** so the last result is shown even without internet.
+მონაცემები იტვირთება **OpenWeatherMap API**-დან Retrofit-ის საშუალებით და **ინახება ლოკალურად Room-ში**, ასე რომ ბოლო შედეგი ინტერნეტის გარეშეც ჩანს.
 
 ---
 
-## 🏗️ Architecture: MVVM
+## 🏗️ არქიტექტურა: MVVM
 
 ```
 UI Layer (HomeFragment, ForecastFragment)
@@ -32,70 +32,80 @@ Room Database                     Retrofit (OpenWeatherMap API)
  ForecastDao)                      RetrofitInstance)
 ```
 
-| Layer | Classes | Responsibility |
+| Layer | Classes | პასუხისმგებლობა |
 |-------|---------|----------------|
-| **Model** | `CurrentWeather`, `ForecastDay` | Data classes + Room Entities |
-| **View** | `MainActivity`, `HomeFragment`, `ForecastFragment` | Display only, no business logic |
-| **ViewModel** | `WeatherViewModel` | LiveData, coroutines, state |
-| **Repository** | `WeatherRepository` | Single source of truth |
-| **Local DB** | `WeatherDatabase`, `WeatherDao`, `ForecastDao` | Room/SQLite cache |
-| **Remote** | `WeatherApiService`, `RetrofitInstance` | HTTP via Retrofit |
+| **Model** | `CurrentWeather`, `ForecastDay` | მონაცემთა კლასები + Room Entity-ები |
+| **View** | `MainActivity`, `HomeFragment`, `ForecastFragment` | მხოლოდ UI, ბიზნეს ლოგიკის გარეშე |
+| **ViewModel** | `WeatherViewModel` | LiveData, coroutines, მდგომარეობა |
+| **Repository** | `WeatherRepository` | მონაცემთა ერთიანი წყარო |
+| **Local DB** | `WeatherDatabase`, `WeatherDao`, `ForecastDao` | Room/SQLite ქეში |
+| **Remote** | `WeatherApiService`, `RetrofitInstance` | HTTP Retrofit-ით |
 
 ---
 
-## 🔧 Technical Details
+## 🔧 ტექნიკური დეტალები
 
-### Libraries
+### ბიბლიოთეკები
 
-| Library | Purpose |
+| Library | დანიშნულება |
 |---------|---------|
-| **Room 2.6.1** | Local SQLite cache of weather data |
-| **Retrofit 2.9.0** | REST calls to OpenWeatherMap API |
-| **Glide 4.16.0** | Load weather icons from CDN URL |
-| **Navigation Component 2.7.7** | Fragment navigation + back stack |
-| **LiveData + ViewModel 2.7.0** | MVVM reactive data layer |
-| **Coroutines 1.7.3** | Background network/DB threads |
-| **ViewBinding** | Type-safe view access (no findViewById) |
-| **FusedLocationProviderClient** | ⭐ GPS location — NEW FEATURE |
+| **Room 2.6.1** | ამინდის მონაცემების ლოკალური SQLite ქეში |
+| **Retrofit 2.9.0** | REST მოთხოვნები OpenWeatherMap API-სთან |
+| **Glide 4.16.0** | ამინდის იკონების ჩატვირთვა CDN URL-იდან |
+| **Navigation Component 2.7.7** | Fragment-ების ნავიგაცია + back stack |
+| **LiveData + ViewModel 2.7.0** | MVVM რეაქტიული მონაცემთა ფენა |
+| **Coroutines 1.7.3** | ფონური ნაკადები ქსელისა და DB-სთვის |
+| **ViewBinding** | View-ებზე წვდომა findViewByID-ის გარეშე |
+| **FusedLocationProviderClient** | ⭐ GPS მდებარეობა — ახალი ფუნქციონალი |
 
-### ⭐ New Feature: GPS Location (FusedLocationProviderClient)
+### ⭐ ახალი ფუნქციონალი: GPS მდებარეობა (FusedLocationProviderClient)
 
-Never used in previous lectures. The app uses Google Play Services' `FusedLocationProviderClient` to:
-1. Request `ACCESS_FINE_LOCATION` permission at runtime using `ActivityResultContracts`
-2. Call `fusedLocationClient.lastLocation` to get the device's coordinates
-3. Pass lat/lon to the ViewModel → Repository → Retrofit API
-4. The API returns the city name + weather for those coordinates
+წინა ლექციებში არ გამოგვიყენებია. აპლიკაცია იყენებს Google Play Services-ის `FusedLocationProviderClient`-ს:
+1. ითხოვს `ACCESS_FINE_LOCATION` უფლებას runtime-ზე `ActivityResultContracts`-ის გამოყენებით
+2. იძახებს `fusedLocationClient.lastLocation`-ს მოწყობილობის კოორდინატების მისაღებად
+3. lat/lon გადაეცემა ViewModel → Repository → Retrofit API-ს
+4. API აბრუნებს ქალაქის სახელს და ამინდს იმ კოორდინატებისთვის
 
-### Database Tables
+### მონაცემთა ბაზის ცხრილები
 
-**current_weather** — stores the most recently fetched weather for a city
+**current_weather** — ინახავს ბოლოს მოძიებულ ამინდს ქალაქისთვის
 
-| Column | Type | Notes |
+| Column | Type | შენიშვნა |
 |--------|------|-------|
-| cityName | TEXT (PK) | One row per city |
+| cityName | TEXT (PK) | ერთი ჩანაწერი ქალაქზე |
 | temperature | REAL | °C |
 | feelsLike | REAL | °C |
 | humidity | INTEGER | % |
-| windSpeed | REAL | m/s |
-| description | TEXT | e.g. "thunderstorm" |
-| iconCode | TEXT | e.g. "11d" — used by Glide to load icon |
-| country | TEXT | Country code e.g. "GE" |
-| timestamp | INTEGER | Unix ms, when data was fetched |
+| windSpeed | REAL | მ/წმ |
+| description | TEXT | მაგ. "thunderstorm" |
+| iconCode | TEXT | მაგ. "11d" — Glide იყენებს იკონის ჩასატვირთად |
+| country | TEXT | ქვეყნის კოდი მაგ. "GE" |
+| timestamp | INTEGER | Unix ms, მონაცემების მიღების დრო |
 
-**forecast** — stores the 7-day forecast rows for a city
+**forecast** — ინახავს 7-დღიანი პროგნოზის სტრიქონებს ქალაქისთვის
 
-| Column | Type | Notes |
+| Column | Type | შენიშვნა |
 |--------|------|-------|
-| id | INTEGER (PK) | Auto-generated by Room |
-| cityName | TEXT | Links to current_weather city |
-| date | TEXT | Day label e.g. "Mon", "Tue" |
-| tempMax | REAL | Daily high °C |
-| tempMin | REAL | Daily low °C |
-| description | TEXT | e.g. "light rain" |
-| iconCode | TEXT | Used by Glide to load icon |
+| id | INTEGER (PK) | Room-ის მიერ ავტო-გენერირებული |
+| cityName | TEXT | current_weather-ის ქალაქთან კავშირი |
+| date | TEXT | დღის სახელი მაგ. "Mon", "Tue" |
+| tempMax | REAL | დღის მაქსიმუმი °C |
+| tempMin | REAL | დღის მინიმუმი °C |
+| description | TEXT | მაგ. "light rain" |
+| iconCode | TEXT | Glide-ს იყენებს იკონისთვის |
 | humidity | INTEGER | % |
-| windSpeed | REAL | m/s |
+| windSpeed | REAL | მ/წმ |
 | chanceOfRain | INTEGER | 0–100% |
 
 ---
 
+## ✅ საგამოცდო მოთხოვნები
+
+- [x] **მენიუ** — Toolbar Search (🔍) და Refresh (🔄) ღილაკებით
+- [x] **სია** — RecyclerView 7-დღიანი პროგნოზით, `ListAdapter` + `DiffUtil`
+- [x] **MVVM არქიტექტურა** — `WeatherViewModel` + `WeatherRepository` + `LiveData`
+- [x] **ბაზასთან კავშირი** — Room (ლოკალური ქეში) + Retrofit (OpenWeatherMap API)
+- [x] **ახალი ფუნქციონალი** — GPS მდებარეობა `FusedLocationProviderClient`-ით
+- [x] **README** — ეს ფაილი
+- [x] **`findViewById` არ გამოიყენება** — ViewBinding ყველგან
+- [x] **XML-ში `Fragment` ტეგი არ გამოიყენება** — გამოიყენება `FragmentContainerView`
