@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One row in the 7-day forecast RecyclerView -->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    app:cardBackgroundColor="@color/bg_card"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Day name: Mon, Tue, etc. -->
+        <TextView
+            android:id="@+id/textViewDay"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:text="Mon"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Weather icon loaded by Glide -->
+        <ImageView
+            android:id="@+id/imageViewIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Weather icon" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/textViewDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Rainy"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Chance of rain -->
+        <TextView
+            android:id="@+id/textViewRain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="31%"
+            android:textColor="@color/accent_blue"
+            android:textSize="13sp"
+            android:layout_marginEnd="12dp" />
+
+        <!-- Temp max / min -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewTempMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+22°"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" / "
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewTempMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+16°"
+                android:textColor="@color/text_secondary"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

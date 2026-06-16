@@ -1,0 +1,5 @@
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class retrofit2.** { *; }
+-keep class com.example.weatherapp.model.** { *; }
+-keep class com.google.gson.** { *; }

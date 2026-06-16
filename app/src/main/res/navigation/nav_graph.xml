@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- HomeFragment: current weather + GPS button -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.weatherapp.ui.home.HomeFragment"
+        android:label="Weather"
+        tools:layout="@layout/fragment_home">
+
+        <!-- Action: Home → 7-day Forecast list -->
+        <action
+            android:id="@+id/action_home_to_forecast"
+            app:destination="@id/forecastFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- ForecastFragment: 7-day list (RecyclerView) -->
+    <fragment
+        android:id="@+id/forecastFragment"
+        android:name="com.example.weatherapp.ui.forecast.ForecastFragment"
+        android:label="7-Day Forecast"
+        tools:layout="@layout/fragment_forecast" />
+
+</navigation>
